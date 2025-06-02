@@ -1,15 +1,66 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ShoppingCart, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
-export default function App({ notification, cartItems, setIsCartOpen, isCartOpen, addToCart, decreaseQuantity, handleCheckout, totalItems, totalPrice, errorMessage }) {
+export default function App() {
+  const [notification, setNotification] = useState("");
+  const [cartItems, setCartItems] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("nextwave_cart");
+      return saved ? JSON.parse(saved) : [];
+    }
+    return [];
+  });
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("nextwave_cart", JSON.stringify(cartItems));
+    }
+  }, [cartItems]);
+
+  const addToCart = (item) => {
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((i) => i.id === item.id);
+      if (existingItem) {
+        return prevItems.map((i) =>
+          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+        );
+      }
+      return [...prevItems, { ...item, quantity: 1 }];
+    });
+    setNotification(`${item.name} ajouté au panier.`);
+    setTimeout(() => setNotification(""), 2000);
+  };
+
+  const decreaseQuantity = (id) => {
+    setCartItems((prevItems) => {
+      return prevItems
+        .map((item) =>
+          item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+        )
+        .filter((item) => item.quantity > 0);
+    });
+  };
+
+  const handleCheckout = async () => {
+    // Intégration Stripe à ajouter ici
+    setErrorMessage("Paiement non configuré pour le moment.");
+  };
+
+  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const totalPrice = cartItems
+    .reduce((acc, item) => acc + item.price * item.quantity, 0)
+    .toFixed(2);
+
   return (
     <div className="relative min-h-screen bg-white p-6">
       <header className="flex justify-between items-center py-4 border-b">
         <div className="flex items-center">
-          <a href="/"><img src="/IMG_3110.JPEG" alt="Logo NEXTWAVE FRANCE" className="h-12 w-auto" /></a>
+          <a href="/"><img src="/IMG_3110.JPEG" alt="Logo" className="h-12 w-auto" /></a>
         </div>
         <Button variant="outline" onClick={() => setIsCartOpen(!isCartOpen)}>
           <ShoppingCart className="mr-2" /> Panier ({totalItems})
