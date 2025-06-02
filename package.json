@@ -1,11 +1,11 @@
 {
   "name": "nextwave-france",
   "version": "1.0.0",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
+"scripts": {
+  "dev": "node node_modules/vite/bin/vite.js",
+  "build": "node node_modules/vite/bin/vite.js build",
+  "preview": "node node_modules/vite/bin/vite.js preview"
+},
   "dependencies": {
     "@stripe/stripe-js": "^2.0.0",
     "framer-motion": "^11.0.0",
