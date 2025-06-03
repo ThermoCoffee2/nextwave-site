@@ -1,13 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import logo from "./assets/logo.png";
 
 export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Simulation de login
+    if (email === "admin@example.com" && password === "admin") {
+      navigate("/admin");
+    } else {
+      alert("Identifiants invalides");
+    }
+  };
+
   return (
-    <div className="p-4 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Connexion</h1>
-      <form className="grid gap-2">
-        <input type="email" placeholder="Email" className="p-2 border rounded" />
-        <input type="password" placeholder="Mot de passe" className="p-2 border rounded" />
-        <button className="bg-blue-600 text-white p-2 rounded">Se connecter</button>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
+      <img src={logo} alt="Logo" className="h-16 mb-6" />
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded shadow-md w-full max-w-sm space-y-4"
+      >
+        <h2 className="text-xl font-bold text-center">Connexion</h2>
+        <div>
+          <label className="block text-sm">Email</label>
+          <input
+            type="email"
+            required
+            className="w-full px-3 py-2 border rounded"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <label className="block text-sm">Mot de passe</label>
+          <input
+            type="password"
+            required
+            className="w-full px-3 py-2 border rounded"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+          Se connecter
+        </button>
       </form>
     </div>
   );

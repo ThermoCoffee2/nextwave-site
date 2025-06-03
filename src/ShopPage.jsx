@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import logo from "./assets/logo.png";
 
 export default function ShopPage() {
   const [products, setProducts] = useState([]);
@@ -12,12 +13,13 @@ export default function ShopPage() {
 
   return (
     <div className="p-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Boutique</h1>
+      <header className="flex justify-between items-center mb-6">
+        <img src={logo} alt="Nextwave Logo" className="h-12" />
         <Link to="/login">
           <button className="bg-blue-600 text-white px-4 py-2 rounded">Se connecter</button>
         </Link>
-      </div>
+      </header>
+      <h1 className="text-2xl font-bold mb-4">Boutique</h1>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {products.map((product) => (
           <div key={product.id} className="border p-2 rounded shadow-sm">
