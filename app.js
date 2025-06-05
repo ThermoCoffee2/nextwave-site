@@ -25,14 +25,13 @@ function render() {
   tbody.innerHTML = '';
   items.forEach((item, index) => {
     const row = document.createElement('tr');
-    row.innerHTML = `<td>${item.ref}</td><td>${item.price}</td><td>${item.qty}</td>` +
       `<td>` +
       `<button onclick="adjustQty(${index}, 1)">+1</button>` +
       `<button onclick="adjustQty(${index}, -1)">-1</button>` +
       `<button onclick="removeItem(${index})">Supprimer</button>` +
       `</td>`;
     tbody.appendChild(row);
-  });
+});
 
   const history = loadHistory();
   const ul = document.querySelector('#history');
@@ -48,12 +47,6 @@ function addItem() {
   const ref = document.getElementById('refInput').value.trim();
   const price = parseFloat(document.getElementById('priceInput').value);
   const qty = parseInt(document.getElementById('qtyInput').value);
-  if (!ref || isNaN(price) || isNaN(qty)) return;
-  const items = loadItems();
-  items.push({ref, price, qty});
-  saveItems(items);
-  const history = loadHistory();
-  history.unshift(`Ajout ${qty} de ${ref} (prix ${price})`);
   saveHistory(history);
   render();
 }
@@ -78,4 +71,3 @@ function adjustQty(index, delta) {
   render();
 }
 
-document.addEventListener('DOMContentLoaded', render);
