@@ -16,13 +16,3 @@ th, td {
 button {
   margin-left: 5px;
 }
-
-#tabs {
-  margin-bottom: 15px;
-}
-
-img.thumb {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-}
