@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "./assets/logo.png";
+import Navbar from "./components/Navbar";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -19,7 +19,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
-      <img src={logo} alt="Logo" className="h-16 mb-6" />
+      <Navbar />
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded shadow-md w-full max-w-sm space-y-4"
