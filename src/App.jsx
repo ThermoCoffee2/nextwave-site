@@ -6,7 +6,7 @@ export default function App() {
   const [featured, setFeatured] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/products?featured=1")
+    fetch("http://82.67.146.55:3001/api/products?featured=1")
       .then((res) => res.json())
       .then((data) => setFeatured(data));
   }, []);

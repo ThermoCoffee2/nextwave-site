@@ -8,7 +8,7 @@ export default function AdminPage() {
   const [form, setForm] = useState({ name: "", price: "", image: "", stock: "", category: "", featured: false });
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/products")
+    fetch("http://82.67.146.55:3001/api/products")
       .then((res) => res.json())
       .then((data) => setProducts(data));
   }, []);
@@ -16,7 +16,7 @@ export default function AdminPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const payload = editing ? { ...form, id: editing } : form;
-    fetch("http://localhost:3001/api/products", {
+    fetch("http://82.67.146.55:3001/api/products", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -28,7 +28,7 @@ export default function AdminPage() {
     }).then(() => {
       setForm({ name: "", price: "", image: "", stock: "", category: "", featured: false });
       setEditing(null);
-      fetch("http://localhost:3001/api/products")
+      fetch("http://82.67.146.55:3001/api/products")
         .then((res) => res.json())
         .then((data) => setProducts(data));
     });
@@ -43,12 +43,12 @@ export default function AdminPage() {
     const product = products.find((p) => p.id === id);
     if (!product) return;
     const newStock = Math.max(0, product.stock + delta);
-    fetch("http://localhost:3001/api/products", {
+    fetch("http://82.67.146.55:3001/api/products", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...product, stock: newStock }),
     }).then(() => {
-      fetch("http://localhost:3001/api/products")
+      fetch("http://82.67.146.55:3001/api/products")
         .then((res) => res.json())
         .then((data) => setProducts(data));
     });

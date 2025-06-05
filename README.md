@@ -14,4 +14,4 @@ This project uses an Express server with a SQLite database to store product info
    npm run dev     # starts the Vite dev server for the React app
    ```
 
-The React app fetches products from `http://localhost:3001/api/products`.
+The React app fetches products from `http://82.67.146.55:3001/api/products`.
