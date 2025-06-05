@@ -1,6 +1,7 @@
 # Nextwave Stock Manager
 
-A simple inventory management interface that persists data in local storage.
+A simple inventory management interface that can now persist data on a
+SQLite database via a Node.js API.
 
 Features include:
 - Automatically numbered references
@@ -20,3 +21,7 @@ Features include:
    npm start
    ```
    This runs the site using [Vite](https://vitejs.dev/).
+3. Start the API server (requires Node.js on port 3001):
+   ```bash
+   npm run server
+   ```
