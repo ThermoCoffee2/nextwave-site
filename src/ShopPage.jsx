@@ -10,7 +10,7 @@ export default function ShopPage() {
   const { addItem } = useContext(CartContext);
 
   useEffect(() => {
-    fetch("http://82.67.146.55:3001/api/products")
+    fetch("/api/products")
       .then((res) => res.json())
       .then((data) => setProducts(data));
   }, []);
