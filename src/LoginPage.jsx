@@ -11,7 +11,10 @@ export default function LoginPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Simulation de login
-    if (email === "admin@example.com" && password === "admin") {
+    if (
+      (email === "admin@example.com" && password === "admin") ||
+      (email === "nextwave.france@gmail.com" && password === "1234")
+    ) {
       navigate("/admin");
     } else {
       alert("Identifiants invalides");

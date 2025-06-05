@@ -54,7 +54,12 @@ export default function AdminPage() {
           <input type="checkbox" checked={form.featured} onChange={e => setForm({ ...form, featured: e.target.checked })} />
           <span>Mettre en avant</span>
         </label>
-        <button type="submit" className="bg-green-600 text-white p-2 rounded">{editing ? "Modifier" : "Ajouter"}</button>
+        <button
+          type="submit"
+          className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+        >
+          {editing ? "Modifier" : "Ajouter"}
+        </button>
       </form>
       <table className="w-full text-left border-collapse">
         <thead>

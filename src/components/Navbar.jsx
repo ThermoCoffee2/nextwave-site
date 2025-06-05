@@ -9,7 +9,9 @@ export default function Navbar() {
   return (
     <nav className="w-full flex items-center justify-between p-4 bg-white mb-4 shadow">
       <div className="flex items-center space-x-4">
-        <img src={logo} alt="Nextwave Logo" className="h-10" />
+        <Link to="/">
+          <img src={logo} alt="Nextwave Logo" className="h-10" />
+        </Link>
         <Link to="/" className="font-semibold">Accueil</Link>
         <Link to="/boutique" className="font-semibold">Boutique</Link>
       </div>
