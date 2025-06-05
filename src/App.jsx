@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
+import CartSidebar from "./components/CartSidebar";
 
 export default function App() {
   const [featured, setFeatured] = useState([]);
@@ -11,8 +12,9 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center text-center">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center text-center">
       <Navbar />
+      <CartSidebar />
 
       <main className="flex flex-col items-center p-6">
         <h1 className="text-4xl font-bold mb-4">Bienvenue sur Nextwave</h1>

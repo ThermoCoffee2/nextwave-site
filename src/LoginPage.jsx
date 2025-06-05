@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import CartSidebar from "./components/CartSidebar";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -20,6 +21,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
       <Navbar />
+      <CartSidebar />
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded shadow-md w-full max-w-sm space-y-4"

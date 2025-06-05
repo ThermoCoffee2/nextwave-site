@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
+import CartSidebar from "./components/CartSidebar";
 
 export default function AdminPage() {
   const [products, setProducts] = useState([]);
@@ -39,8 +40,9 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="p-4 max-w-3xl mx-auto">
+    <div className="p-4 max-w-3xl mx-auto min-h-screen bg-gray-100">
       <Navbar />
+      <CartSidebar />
       <h1 className="text-2xl font-bold mb-4">Admin - Gestion des Produits</h1>
       <form onSubmit={handleSubmit} className="grid gap-2 mb-4">
         <input placeholder="Nom" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
@@ -54,14 +56,32 @@ export default function AdminPage() {
         </label>
         <button type="submit" className="bg-green-600 text-white p-2 rounded">{editing ? "Modifier" : "Ajouter"}</button>
       </form>
-      <ul>
-        {products.map(p => (
-          <li key={p.id} className="mb-2">
-            {p.name} - {p.price}€ - Stock: {p.stock}
-            <button className="ml-2 text-blue-500" onClick={() => handleEdit(p)}>Modifier</button>
-          </li>
-        ))}
-      </ul>
+      <table className="w-full text-left border-collapse">
+        <thead>
+          <tr>
+            <th className="border p-2">Nom</th>
+            <th className="border p-2">Prix</th>
+            <th className="border p-2">Stock</th>
+            <th className="border p-2">Catégorie</th>
+            <th className="border p-2">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {products.map((p) => (
+            <tr key={p.id}>
+              <td className="border p-2">{p.name}</td>
+              <td className="border p-2">{p.price}</td>
+              <td className="border p-2">{p.stock}</td>
+              <td className="border p-2">{p.category}</td>
+              <td className="border p-2">
+                <button className="text-blue-500" onClick={() => handleEdit(p)}>
+                  Modifier
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

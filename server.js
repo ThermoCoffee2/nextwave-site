@@ -19,9 +19,11 @@ async function init() {
   const count = await db.get('SELECT COUNT(*) as c FROM products');
   if (count.c === 0) {
     const sample = [
-      ['Booster Édition Spéciale', 9.9, '/featured/item1.jpg', 50, 'cartes', 1],
-      ['Carte Holo Rare', 14.5, '/featured/item2.jpg', 25, 'cartes', 1],
-      ['Display scellé', 120, '/featured/item3.jpg', 10, 'boites', 1]
+      ['Booster Édition Spéciale', 9.9, 'https://via.placeholder.com/300x200?text=Item1', 50, 'cartes', 1],
+      ['Carte Holo Rare', 14.5, 'https://via.placeholder.com/300x200?text=Item2', 25, 'cartes', 1],
+      ['Display scellé', 120, 'https://via.placeholder.com/300x200?text=Item3', 10, 'boites', 1],
+      ['Jeu de cartes collector', 19.9, 'https://via.placeholder.com/300x200?text=Item4', 40, 'cartes', 0],
+      ['Poster exclusif', 7.5, 'https://via.placeholder.com/300x200?text=Item5', 60, 'goodies', 0]
     ];
     for (const p of sample) {
       await db.run(

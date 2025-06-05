@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Navbar from "./components/Navbar";
+import CartSidebar from "./components/CartSidebar";
+import { CartContext } from "./context/CartContext";
 
 export default function ShopPage() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
+  const { addItem } = useContext(CartContext);
 
   useEffect(() => {
     fetch("http://localhost:3001/api/products")
@@ -20,8 +23,9 @@ export default function ShopPage() {
   );
 
   return (
-    <div className="p-4">
+    <div className="p-4 min-h-screen bg-gray-100">
       <Navbar />
+      <CartSidebar />
       <h1 className="text-2xl font-bold mb-4">Boutique</h1>
       <div className="flex space-x-4 mb-4">
         <input
@@ -51,6 +55,12 @@ export default function ShopPage() {
             <h2 className="font-bold">{product.name}</h2>
             <p>{product.price.toFixed(2)} €</p>
             <p className="text-sm text-gray-600">Stock : {product.stock}</p>
+            <button
+              className="mt-2 bg-blue-600 text-white px-2 py-1 rounded"
+              onClick={() => addItem(product)}
+            >
+              Ajouter
+            </button>
           </div>
         ))}
       </div>
