@@ -28,10 +28,15 @@ img.thumb {
   object-fit: cover;
 }
 
-#branding {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 10px;
-  font-weight: bold;
+  #branding {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    font-weight: bold;
+  }
+
+.error {
+  color: red;
+  margin-bottom: 10px;
 }

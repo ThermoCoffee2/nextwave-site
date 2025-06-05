@@ -2,6 +2,20 @@ const KEY_ITEMS = 'stock_items';
 const KEY_HISTORY = 'stock_history';
 const KEY_NEXT_ID = 'stock_next_id';
 
+function setError(message) {
+  const div = document.getElementById('error');
+  if (div) {
+    div.textContent = message;
+    div.style.display = message ? 'block' : 'none';
+  } else if (message) {
+    alert(message);
+  }
+}
+
+function clearError() {
+  setError('');
+}
+
 function loadItems() {
   const json = localStorage.getItem(KEY_ITEMS);
   return json ? JSON.parse(json) : [];
@@ -61,12 +75,21 @@ function render() {
 }
 
 function addItem() {
+  clearError();
   const price = parseFloat(document.getElementById('priceInput').value);
   const qty = parseInt(document.getElementById('qtyInput').value);
   const desc = document.getElementById('descInput').value.trim();
   const category = document.getElementById('categoryInput').value;
   const file = document.getElementById('photoInput').files[0];
-  if (isNaN(price) || isNaN(qty)) return;
+
+  if (isNaN(price) || isNaN(qty) || price < 0 || qty < 0) {
+    setError('Veuillez saisir un prix et une quantité valides.');
+    return;
+  }
+  if (!desc) {
+    setError('La description est requise.');
+    return;
+  }
 
   const id = loadNextId();
   const ref = id.toString();
