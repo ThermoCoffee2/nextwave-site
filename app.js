@@ -1,6 +1,4 @@
-const KEY_ITEMS = 'stock_items';
-const KEY_HISTORY = 'stock_history';
-const KEY_NEXT_ID = 'stock_next_id';
+const BASE_URL = 'http://82.67.146.55:3001';
 
 function setError(message) {
   const div = document.getElementById('error');
@@ -16,65 +14,79 @@ function clearError() {
   setError('');
 }
 
-function loadItems() {
-  const json = localStorage.getItem(KEY_ITEMS);
-  return json ? JSON.parse(json) : [];
+async function loadItems() {
+  const res = await fetch(`${BASE_URL}/items`);
+  if (!res.ok) throw new Error('Impossible de charger les articles');
+  return await res.json();
 }
 
-function saveItems(items) {
-  localStorage.setItem(KEY_ITEMS, JSON.stringify(items));
+async function loadHistory() {
+  const res = await fetch(`${BASE_URL}/history`);
+  if (!res.ok) throw new Error('Impossible de charger l\'historique');
+  return await res.json();
 }
 
-function loadHistory() {
-  const json = localStorage.getItem(KEY_HISTORY);
-  return json ? JSON.parse(json) : [];
+async function addItemToServer(item) {
+  const res = await fetch(`${BASE_URL}/items`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(item)
+  });
+  if (!res.ok) throw new Error('Erreur lors de l\'ajout de l\'article');
+  return await res.json();
 }
 
-function saveHistory(history) {
-  localStorage.setItem(KEY_HISTORY, JSON.stringify(history));
+async function removeItemFromServer(id) {
+  const res = await fetch(`${BASE_URL}/items/${id}`, { method: 'DELETE' });
+  if (!res.ok) throw new Error('Erreur lors de la suppression');
 }
 
-function loadNextId() {
-  const val = localStorage.getItem(KEY_NEXT_ID);
-  return val ? parseInt(val) : 1;
+async function adjustQtyOnServer(id, delta) {
+  const res = await fetch(`${BASE_URL}/items/${id}/adjust`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ delta })
+  });
+  if (!res.ok) throw new Error('Erreur lors de la mise à jour');
 }
 
-function saveNextId(id) {
-  localStorage.setItem(KEY_NEXT_ID, id.toString());
-}
+async function render() {
+  clearError();
+  try {
+    const filter = document.getElementById('filterCategory').value;
+    let items = await loadItems();
+    if (filter) {
+      items = items.filter(i => i.category === filter);
+    }
+    const tbody = document.querySelector('#inventory tbody');
+    tbody.innerHTML = '';
+    items.forEach((item) => {
+      const row = document.createElement('tr');
+      const img = item.photo ? `<img src="${item.photo}" class="thumb">` : '';
+      row.innerHTML = `<td>${img}</td><td>${item.ref}</td><td>${item.desc || ''}</td><td>${item.category}</td>` +
+        `<td>${item.price}</td><td>${item.qty}</td>` +
+        `<td>` +
+        `<button onclick="adjustQty(${item.id}, 1)">+1</button>` +
+        `<button onclick="adjustQty(${item.id}, -1)">-1</button>` +
+        `<button onclick="removeItem(${item.id})">Supprimer</button>` +
+        `</td>`;
+      tbody.appendChild(row);
+    });
 
-function render() {
-  const filter = document.getElementById('filterCategory').value;
-  let items = loadItems();
-  if (filter) {
-    items = items.filter(i => i.category === filter);
+    const history = await loadHistory();
+    const ul = document.querySelector('#history');
+    ul.innerHTML = '';
+    history.forEach((entry) => {
+      const li = document.createElement('li');
+      li.textContent = entry;
+      ul.appendChild(li);
+    });
+  } catch (e) {
+    setError(e.message);
   }
-  const tbody = document.querySelector('#inventory tbody');
-  tbody.innerHTML = '';
-  items.forEach((item, index) => {
-    const row = document.createElement('tr');
-    const img = item.photo ? `<img src="${item.photo}" class="thumb">` : '';
-    row.innerHTML = `<td>${img}</td><td>${item.ref}</td><td>${item.desc || ''}</td><td>${item.category}</td>` +
-      `<td>${item.price}</td><td>${item.qty}</td>` +
-      `<td>` +
-      `<button onclick="adjustQty(${index}, 1)">+1</button>` +
-      `<button onclick="adjustQty(${index}, -1)">-1</button>` +
-      `<button onclick="removeItem(${index})">Supprimer</button>` +
-      `</td>`;
-    tbody.appendChild(row);
-  });
-
-  const history = loadHistory();
-  const ul = document.querySelector('#history');
-  ul.innerHTML = '';
-  history.forEach((entry) => {
-    const li = document.createElement('li');
-    li.textContent = entry;
-    ul.appendChild(li);
-  });
 }
 
-function addItem() {
+async function addItem() {
   clearError();
   const price = parseFloat(document.getElementById('priceInput').value);
   const qty = parseInt(document.getElementById('qtyInput').value);
@@ -91,11 +103,13 @@ function addItem() {
     return;
   }
 
-  const id = loadNextId();
-  const ref = id.toString();
-  const finish = (photo) => {
-    addItemToStorage({ ref, price, qty, desc, category, photo });
-    saveNextId(id + 1);
+  const finish = async (photo) => {
+    try {
+      await addItemToServer({ price, qty, desc, category, photo });
+      await render();
+    } catch (e) {
+      setError(e.message);
+    }
   };
   if (file) {
     const reader = new FileReader();
@@ -106,34 +120,24 @@ function addItem() {
   }
 }
 
-function addItemToStorage(item) {
-  const items = loadItems();
-  items.push(item);
-  saveItems(items);
-  const history = loadHistory();
-  history.unshift(`Ajout ${item.qty} de réf ${item.ref}`);
-  saveHistory(history);
-  render();
+async function removeItem(id) {
+  clearError();
+  try {
+    await removeItemFromServer(id);
+    await render();
+  } catch (e) {
+    setError(e.message);
+  }
 }
 
-function removeItem(index) {
-  const items = loadItems();
-  const [removed] = items.splice(index, 1);
-  saveItems(items);
-  const history = loadHistory();
-  history.unshift(`Suppression de réf ${removed.ref}`);
-  saveHistory(history);
-  render();
-}
-
-function adjustQty(index, delta) {
-  const items = loadItems();
-  items[index].qty += delta;
-  saveItems(items);
-  const history = loadHistory();
-  history.unshift(`${delta > 0 ? '+' : '-'}${Math.abs(delta)} sur réf ${items[index].ref}`);
-  saveHistory(history);
-  render();
+async function adjustQty(id, delta) {
+  clearError();
+  try {
+    await adjustQtyOnServer(id, delta);
+    await render();
+  } catch (e) {
+    setError(e.message);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
