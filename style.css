@@ -1,6 +1,7 @@
 body {
   font-family: Arial, sans-serif;
   margin: 20px;
+  position: relative;
 }
 table {
   border-collapse: collapse;
@@ -15,4 +16,12 @@ th, td {
 }
 button {
   margin-left: 5px;
+}
+
+#branding {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  font-weight: bold;
 }
