@@ -3,7 +3,9 @@
 A simple inventory management interface that persists data in local storage.
 
 Features include:
-- Adding items with reference, price, quantity and optional photo
+- Automatically numbered references
+- Adding items with price, quantity, description, category and optional photo
+- Filtering the inventory by category
 - Viewing movement history
 - A statistics tab showing total quantity and value of stock
 
