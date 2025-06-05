@@ -15,6 +15,16 @@ export async function initDb() {
     featured INTEGER DEFAULT 0
   )`);
 
+  await db.run(`CREATE TABLE IF NOT EXISTS history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    product_id INTEGER,
+    name TEXT,
+    action TEXT,
+    price REAL,
+    stock INTEGER,
+    date DATETIME DEFAULT CURRENT_TIMESTAMP
+  )`);
+
   const count = await db.get('SELECT COUNT(*) as c FROM products');
   if (count.c === 0) {
     const sample = [

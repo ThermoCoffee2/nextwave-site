@@ -54,11 +54,21 @@ export default function AdminPage() {
     });
   };
 
+  const handleDelete = (id) => {
+    if (!window.confirm("Supprimer ce produit ?")) return;
+    fetch(`/api/products/${id}`, { method: "DELETE" }).then(() => {
+      fetch("/api/products")
+        .then((res) => res.json())
+        .then((data) => setProducts(data));
+    });
+  };
+
   return (
     <div className="p-4 max-w-3xl mx-auto min-h-screen bg-gray-100">
       <Navbar />
       <CartSidebar />
       <h1 className="text-2xl font-bold mb-4">Admin - Gestion des Produits</h1>
+      <a href="/historique" className="text-blue-600 underline mb-4 inline-block">Voir l'historique</a>
       <form onSubmit={handleSubmit} className="grid gap-2 mb-4">
         <input placeholder="Nom" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
         <input placeholder="Prix" value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} />
@@ -114,6 +124,12 @@ export default function AdminPage() {
               <td className="border p-2">
                 <button className="text-blue-500" onClick={() => handleEdit(p)}>
                   Modifier
+                </button>
+                <button
+                  className="ml-2 text-red-500"
+                  onClick={() => handleDelete(p.id)}
+                >
+                  Supprimer
                 </button>
               </td>
             </tr>
