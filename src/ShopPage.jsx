@@ -23,11 +23,12 @@ export default function ShopPage() {
   );
 
   return (
-    <div className="p-4 min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100">
       <Navbar />
       <CartSidebar />
-      <h1 className="text-2xl font-bold mb-4">Boutique</h1>
-      <div className="flex space-x-4 mb-4">
+      <div className="p-4">
+        <h1 className="text-2xl font-bold mb-4">Boutique</h1>
+        <div className="flex space-x-4 mb-4">
         <input
           type="text"
           placeholder="Recherche"
@@ -63,6 +64,7 @@ export default function ShopPage() {
             </button>
           </div>
         ))}
+      </div>
       </div>
     </div>
   );
